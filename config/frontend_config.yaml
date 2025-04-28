@@ -1,0 +1,50 @@
+# Deepdevflow Frontend Configuration
+
+# API connection settings
+api_url: "http://localhost:8000"
+api_timeout: 30
+
+# Theme configuration
+theme:
+  primary_color: "#1E88E5"
+  secondary_color: "#FFC107"
+  background_color: "#FFFFFF"
+  text_color: "#333333"
+  accent_color: "#4CAF50"
+  error_color: "#F44336"
+  warning_color: "#FF9800"
+  info_color: "#2196F3"
+  success_color: "#4CAF50"
+
+# LLM settings
+llm:
+  default_provider: "openai"
+  api_key_env_var: "OPENAI_API_KEY"
+  streaming_enabled: true
+
+# UI settings
+ui:
+  messages_per_page: 50
+  enable_streaming: true
+  show_agent_details: true
+  show_session_info: true
+  show_conversation_history: true
+  show_agent_selection: true
+  chat_input_placeholder: "Type your message here..."
+  chat_response_placeholder: "Thinking..."
+  default_session_name: "Session {date}"
+  default_conversation_name: "Conversation {time}"
+
+# Streamlit settings
+streamlit:
+  page_title: "Deepdevflow"
+  page_icon: "🤖"
+  layout: "wide"
+  initial_sidebar_state: "expanded"
+  menu_items:
+    about: "# Deepdevflow\nA multi-agent framework built with Google ADK"
+
+# Cache settings
+cache:
+  enabled: true
+  ttl: 3600  # seconds

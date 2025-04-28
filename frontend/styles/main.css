@@ -1,0 +1,231 @@
+/* 
+Deepdevflow - Streamlit Custom Styles
+*/
+
+/* General UI improvements */
+.stApp {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Sidebar styling */
+.css-1d391kg {
+    padding-top: 2rem;
+}
+
+/* Page title styling */
+h1 {
+    margin-bottom: 1.5rem !important;
+    color: #2C3E50 !important;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+h2 {
+    margin-top: 1.5rem !important;
+    color: #34495E !important;
+}
+
+h3 {
+    margin-top: 1rem !important;
+    color: #566573 !important;
+}
+
+/* Message styling for chat interface */
+div.stChatMessage {
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    line-height: 1.5 !important;
+}
+
+div.stChatMessage[data-testid="stChatMessageUser"] {
+    background-color: rgba(28, 131, 225, 0.1) !important;
+}
+
+div.stChatMessage[data-testid="stChatMessageAssistant"] {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Chat message captions */
+div.stChatMessage div.stChatCaption p {
+    font-size: 0.7rem !important;
+    opacity: 0.7;
+    text-align: right;
+}
+
+/* Agent cards in agent list */
+div.agent-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+    transition: all 0.2s ease-in-out;
+}
+
+div.agent-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    border-color: #ddd;
+}
+
+/* Status indicators */
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.status-active {
+    background-color: #4CAF50;
+}
+
+.status-inactive {
+    background-color: #F44336;
+}
+
+/* Form styling */
+div.stForm {
+    background-color: rgba(0, 0, 0, 0.02);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+/* Button styling */
+button.stButton > button {
+    border-radius: 4px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+}
+
+button.stButton > button:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+button.stButton > button[kind="primary"] {
+    background-color: #1E88E5 !important;
+}
+
+button.stButton > button[kind="secondary"] {
+    color: #1E88E5 !important;
+    border-color: #1E88E5 !important;
+}
+
+/* Table styling */
+div.stDataFrame {
+    border: 1px solid #eee !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+div.stDataFrame div[data-testid="stTable"] table {
+    border-collapse: collapse !important;
+}
+
+div.stDataFrame div[data-testid="stTable"] thead tr th {
+    background-color: #f5f5f5 !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+}
+
+div.stDataFrame div[data-testid="stTable"] tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Form input fields */
+div.stTextInput input, div.stNumberInput input, div.stTextArea textarea {
+    border-radius: 4px !important;
+    border-color: #ddd !important;
+}
+
+div.stTextInput input:focus, div.stNumberInput input:focus, div.stTextArea textarea:focus {
+    border-color: #1E88E5 !important;
+    box-shadow: 0 0 0 1px rgba(30, 136, 229, 0.2) !important;
+}
+
+/* Selectbox styling */
+div.stSelectbox div[data-baseweb="select"] > div:first-child {
+    border-radius: 4px !important;
+    border-color: #ddd !important;
+}
+
+div.stSelectbox div[data-baseweb="select"] > div:first-child:focus {
+    border-color: #1E88E5 !important;
+    box-shadow: 0 0 0 1px rgba(30, 136, 229, 0.2) !important;
+}
+
+/* Tabs styling */
+div.stTabs button[role="tab"] {
+    font-weight: 500 !important;
+}
+
+div.stTabs button[role="tab"][aria-selected="true"] {
+    color: #1E88E5 !important;
+}
+
+div.stTabs button[role="tab"]::after {
+    background-color: #1E88E5 !important;
+}
+
+/* Info boxes */
+div.stAlert {
+    border-radius: 4px !important;
+}
+
+/* Code blocks */
+pre {
+    background-color: #f5f5f5 !important;
+    border-radius: 4px !important;
+    padding: 0.75rem !important;
+    font-size: 0.85rem !important;
+}
+
+/* Markdown content */
+div.stMarkdown p {
+    line-height: 1.6 !important;
+}
+
+/* Metrics */
+div[data-testid="metric-container"] {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+div[data-testid="metric-container"] label {
+    font-weight: 600 !important;
+    color: #566573 !important;
+}
+
+/* Divider */
+hr {
+    margin: 1.5rem 0 !important;
+    border-color: #eee !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .stApp {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    h2 {
+        font-size: 1.25rem !important;
+    }
+    
+    h3 {
+        font-size: 1rem !important;
+    }
+    
+    div.row-widget.stButton {
+        width: 100% !important;
+    }
+}

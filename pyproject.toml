@@ -1,0 +1,95 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "deepdevflow"
+version = "0.1.0"
+description = "A multi-agent framework built with Google ADK"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "Deepdevflow Team"}
+]
+keywords = ["ai", "agents", "llm", "framework", "google-adk", "streamlit"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    # Backend dependencies
+    # Frontend dependencies
+    "streamlit>=1.22.0",
+    "streamlit-chat>=0.0.2",
+    "pandas>=1.4.0",
+    "numpy>=1.22.0",
+    "plotly>=5.6.0",
+    "pillow>=9.0.0",
+    "google-adk>=0.3.0",
+    "fastapi>=0.115.12",
+    "uvicorn>=0.34.2",
+    "pydantic>=2.11.3",
+    "sqlalchemy>=2.0.40",
+    "python-dotenv>=1.1.0",
+    "httpx>=0.28.1",
+    "python-multipart>=0.0.20",
+    "pyyaml>=6.0.2",
+    "asyncio>=3.4.3",
+    "aiosqlite>=0.21.0",
+    "urllib3>=2.4.0",
+    "openai>=1.76.0",
+    "litellm>=1.67.4",
+    "anthropic>=0.50.0",
+    "black>=25.1.0",
+    "isort>=6.0.1",
+    "flake8>=7.2.0",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "build>=1.2.2.post1",
+    "psycopg2==2.7.5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=22.1.0",
+    "isort>=5.10.0",
+    "flake8>=4.0.0",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.17.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/deepdevflow"
+"Bug Tracker" = "https://github.com/yourusername/deepdevflow/issues"
+"Documentation" = "https://github.com/yourusername/deepdevflow/wiki"
+
+[tool.hatch.build.targets.wheel]
+packages = ["backend", "frontend"]
+
+[tool.black]
+line-length = 88
+target-version = ["py39"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+asyncio_mode = "auto"
+
+[tool.uv]
+# uv specific configuration
+#pip-requirement-upgrade-strategy = "eager"
+#pip-break-system-packages = false
+#use-lazy-wheel-building = true

@@ -1,0 +1,116 @@
+# Agent Configuration
+
+# Host agent configuration
+host_agent:
+  name: "Host Agent"
+  description: "Main orchestration agent powered by Google ADK"
+  model: "gpt-4"
+  instruction: |
+    You are the Host Agent, the main orchestrator in the Deepdevflow system.
+    Your role is to manage conversations, understand the user's intent, and delegate tasks to specialized agents when appropriate.
+    
+    When a user sends a message:
+    1. Analyze the content and determine the most appropriate agent to handle it
+    2. If you can handle it directly, do so
+    3. If another agent would be better suited, delegate to that agent
+    4. Maintain the context of the conversation
+    5. Always be helpful, clear, and concise
+    
+    Remember to:
+    - Respect user preferences and privacy
+    - Acknowledge when you don't know something
+    - Provide attribution for information sources when possible
+  capabilities:
+    - "general_qa"
+    - "conversation_management"
+    - "task_routing"
+    - "context_tracking"
+  tools:
+    - "list_remote_agents"
+    - "send_task"
+    - "check_task_status"
+
+# Remote agent connection settings
+connection:
+  timeout: 30
+  retries: 3
+  retry_delay: 1
+  check_interval: 5
+  health_check_enabled: true
+
+# Default agent templates
+templates:
+  code_agent:
+    name: "Code Assistant"
+    description: "Specialized in software development assistance"
+    model: "gpt-4"
+    instruction: |
+      You are a Code Assistant, specialized in helping with software development.
+      Provide code examples, explanations, debugging help, and best practices.
+      Always consider the context and programming language the user is working with.
+    capabilities:
+      - "code_completion"
+      - "code_explanation"
+      - "code_review"
+      - "debugging"
+      - "best_practices"
+    tools:
+      - "search_documentation"
+      - "analyze_code"
+      - "fix_bugs"
+
+  math_agent:
+    name: "Math Assistant"
+    description: "Specialized in mathematical problem solving"
+    model: "gpt-4"
+    instruction: |
+      You are a Math Assistant, specialized in solving and explaining mathematical concepts.
+      Help users with calculations, proofs, and mathematical theories.
+      Provide step-by-step explanations to help users understand the solutions.
+    capabilities:
+      - "algebra"
+      - "calculus"
+      - "statistics"
+      - "linear_algebra"
+      - "probability"
+    tools:
+      - "solve_equation"
+      - "calculate"
+      - "visualize_function"
+
+  writing_agent:
+    name: "Writing Assistant"
+    description: "Specialized in writing and editing content"
+    model: "gpt-4"
+    instruction: |
+      You are a Writing Assistant, specialized in helping users write and edit content.
+      Provide suggestions to improve clarity, grammar, style, and structure.
+      Help with various writing tasks including essays, emails, blog posts, and creative writing.
+    capabilities:
+      - "grammar_checking"
+      - "style_improvement"
+      - "content_generation"
+      - "summarization"
+      - "proofreading"
+    tools:
+      - "check_grammar"
+      - "suggest_improvements"
+      - "rewrite"
+      - "summarize"
+
+# Routing configuration
+routing:
+  default_strategy: "capability_match"  # capability_match, round_robin, weighted, custom
+  fallback_agent: "host_agent"
+  max_hop_count: 3
+  strategies:
+    capability_match:
+      threshold: 0.7
+      weights:
+        exact_match: 1.0
+        partial_match: 0.5
+    weighted:
+      host_agent: 1.0
+      code_agent: 0.8
+      math_agent: 0.8
+      writing_agent: 0.8

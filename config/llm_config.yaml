@@ -1,0 +1,73 @@
+# LLM Provider Configuration
+
+# OpenAI configuration
+openai:
+  enabled: true
+  api_key_env_var: "OPENAI_API_KEY"
+  base_url: "https://api.openai.com/v1"
+  timeout: 60
+  retries: 3
+  defaults:
+    model: "gpt-3.5-turbo"
+    temperature: 0.7
+    max_tokens: 2048
+    top_p: 1.0
+    system_message: "You are a helpful AI assistant."
+
+# Anthropic configuration
+anthropic:
+  enabled: false
+  api_key_env_var: "ANTHROPIC_API_KEY"
+  timeout: 60
+  retries: 2
+  defaults:
+    model: "claude-3-sonnet-20240229"
+    temperature: 0.7
+    max_tokens: 2048
+    top_p: 1.0
+    system_message: "You are Claude, a helpful AI assistant created by Anthropic."
+
+# LiteLLM configuration (unified interface for multiple LLM providers)
+litellm:
+  enabled: false
+  api_key_env_var: "LITELLM_API_KEY"
+  server_url: "http://localhost:4000"
+  timeout: 60
+  retries: 3
+  defaults:
+    model: "openai/gpt-3.5-turbo"
+    temperature: 0.7
+    max_tokens: 2048
+    top_p: 1.0
+    system_message: "You are a helpful AI assistant."
+
+# Ollama configuration (local LLM)
+ollama:
+  enabled: false
+  server_url: "http://localhost:11434"
+  timeout: 120  # Local models might need more time
+  retries: 2
+  defaults:
+    model: "llama3"
+    temperature: 0.8
+    max_tokens: 2048
+    system_message: "You are a helpful AI assistant."
+
+# Embedding models configuration
+embeddings:
+  default_provider: "openai"
+  providers:
+    openai:
+      model: "text-embedding-ada-002"
+      dimensions: 1536
+      batch_size: 100
+    ollama:
+      model: "nomic-embed-text"
+      dimensions: 768
+      batch_size: 50
+
+# Cache configuration
+cache:
+  enabled: true
+  ttl: 3600  # seconds
+  max_size: 10000  # number of items
