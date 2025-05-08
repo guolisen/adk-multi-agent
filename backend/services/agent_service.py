@@ -34,16 +34,20 @@ class AgentService:
         self._host_agent = HostAgent()
         
         # Register host agent as a managed agent
-        self._register_host_agent()
+        # Note: We're calling the async method from a non-async context
+        # This won't await the coroutine and is just creating a placeholder
+        # The actual registration will happen in the first async call to get_agent or similar
+        self._agents["host_agent"] = self._host_agent
+        logger.info("Host agent initialized (async registration pending)")
         
         # Load registered agents from database
         self._load_agents_from_db()
     
-    def _register_host_agent(self):
+    async def _register_host_agent(self):
         """Register host agent as a managed agent."""
         try:
             # Convert host agent to model
-            agent_model = self._host_agent.to_agent_model()
+            agent_model = await self._host_agent.to_agent_model()
             
             # Register in memory
             self._agents["host_agent"] = self._host_agent
@@ -63,18 +67,27 @@ class AgentService:
                     AgentModel.is_remote == True
                 ).all()
                 
-                # Register each agent
-                for agent in agents:
-                    try:
-                        # Register with host agent
-                        success = self._host_agent.register_remote_agent(agent)
-                        
-                        if success:
-                            logger.info(f"Registered remote agent from DB: {agent.name}")
-                    except Exception as e:
-                        logger.error(f"Failed to register remote agent {agent.name}: {e}")
+                # Store agents for later async registration
+                self._pending_db_agents = agents
+                logger.info(f"Found {len(agents)} remote agents in DB (async registration pending)")
         except Exception as e:
             logger.error(f"Failed to load agents from database: {e}")
+    
+    async def _register_db_agents(self):
+        """Register agents loaded from the database."""
+        if hasattr(self, '_pending_db_agents'):
+            for agent in self._pending_db_agents:
+                try:
+                    # Register with host agent
+                    success = await self._host_agent.register_remote_agent(agent)
+                    
+                    if success:
+                        logger.info(f"Registered remote agent from DB: {agent.name}")
+                except Exception as e:
+                    logger.error(f"Failed to register remote agent {agent.name}: {e}")
+            
+            # Clear pending agents
+            delattr(self, '_pending_db_agents')
     
     async def get_agent(self, agent_id: str) -> Optional[Agent]:
         """Get an agent by ID.
@@ -85,6 +98,13 @@ class AgentService:
         Returns:
             The agent or None if not found.
         """
+        # Ensure host agent is properly registered
+        await self._register_host_agent()
+        
+        # Ensure DB agents are registered
+        if hasattr(self, '_pending_db_agents'):
+            await self._register_db_agents()
+        
         # Check if agent is in memory
         if agent_id in self._agents:
             return self._agents[agent_id]
@@ -127,6 +147,9 @@ class AgentService:
         Returns:
             True if the agent was registered successfully, False otherwise.
         """
+        # Ensure host agent is properly registered
+        await self._register_host_agent()
+        
         try:
             # Save to database
             with get_session() as db:
@@ -173,6 +196,9 @@ class AgentService:
         Returns:
             True if the agent was unregistered successfully, False otherwise.
         """
+        # Ensure host agent is properly registered
+        await self._register_host_agent()
+        
         try:
             # Update database
             with get_session() as db:
@@ -200,6 +226,13 @@ class AgentService:
         Returns:
             A list of agent models.
         """
+        # Ensure host agent is properly registered
+        await self._register_host_agent()
+        
+        # Ensure DB agents are registered
+        if hasattr(self, '_pending_db_agents'):
+            await self._register_db_agents()
+            
         try:
             with get_session() as db:
                 return db.query(AgentModel).filter(AgentModel.is_active == True).all()

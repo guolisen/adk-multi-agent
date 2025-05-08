@@ -4,6 +4,9 @@ Deepdevflow - Main FastAPI Backend Application
 
 import os
 import logging
+from contextlib import asynccontextmanager
+import tracemalloc
+
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -12,6 +15,9 @@ from backend.routes import session, conversation, agent
 from backend.utils.database import init_db
 from backend.utils.config import config
 
+# Enable tracemalloc to get object allocation traceback
+tracemalloc.start()
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO if not config.debug_mode else logging.DEBUG,
@@ -19,33 +25,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger("deepdevflow")
 
-# Create FastAPI application
-app = FastAPI(
-    title="Deepdevflow",
-    description="A multiagent framework built with Google ADK",
-    version="0.1.0",
-    docs_url="/docs",
-    redoc_url="/redoc",
-)
 
-# Configure CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=config.cors.get("allow_origins", ["*"]),
-    allow_credentials=config.cors.get("allow_credentials", True),
-    allow_methods=config.cors.get("allow_methods", ["*"]),
-    allow_headers=config.cors.get("allow_headers", ["*"]),
-)
-
-# Include routers
-app.include_router(session.router)
-app.include_router(conversation.router)
-app.include_router(agent.router)
-
-
-@app.on_event("startup")
-async def startup_event():
-    """Initialize database and other resources on startup."""
+# Define lifespan context manager (replaces on_event handlers)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup logic
     logger.info("Starting Deepdevflow backend application")
     try:
         init_db()
@@ -53,12 +37,36 @@ async def startup_event():
     except Exception as e:
         logger.error(f"Failed to initialize database: {str(e)}")
         # Still allow the application to start, but log the error
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Clean up resources on shutdown."""
+    
+    yield  # This is where the application runs
+    
+    # Shutdown logic
     logger.info("Shutting down Deepdevflow backend application")
+
+
+# Create FastAPI application with lifespan
+app = FastAPI(
+    title="Deepdevflow",
+    description="A multiagent framework built with Google ADK",
+    version="0.1.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    lifespan=lifespan,
+)
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=config.get("server.cors.allow_origins", ["*"]),
+    allow_credentials=config.get("server.cors.allow_credentials", True),
+    allow_methods=config.get("server.cors.allow_methods", ["*"]),
+    allow_headers=config.get("server.cors.allow_headers", ["*"]),
+)
+
+# Include routers
+app.include_router(session.router)
+app.include_router(conversation.router)
+app.include_router(agent.router)
 
 
 @app.get("/", tags=["Root"])

@@ -83,6 +83,48 @@ Deepdevflow/
 
 5. Edit the configuration files with your settings.
 
+### Database Initialization
+
+The project comes with a ready-to-use database initialization script. By default, the database is stored in the `data/` directory as specified in `config/config.yaml`.
+
+To initialize the database:
+
+```bash
+# Create the data directory if it doesn't exist
+mkdir -p data
+
+# Copy the initialization script to the data directory
+cp init_db.sql data/
+
+# Initialize SQLite database in the data directory
+cd data && sqlite3 deepdevflow.db < init_db.sql
+```
+
+The initialization script creates all necessary tables:
+- `agents` - For managing various agent configurations
+- `sessions` - To store user sessions
+- `conversations` - For managing conversations within sessions
+- `messages` - To store all conversation messages
+- `tasks` - For tracking agent tasks and their statuses
+
+The script also inserts default system and host agents to get you started quickly.
+
+The database connection is configured in `config/config.yaml`:
+
+```yaml
+database:
+  # Default SQLite connection string (stored in data/ directory)
+  connection_string: "sqlite:///data/deepdevflow.db"
+  
+  # For a custom SQLite location, update the path
+  # connection_string: "sqlite:///path/to/your/custom/location/deepdevflow.db"
+  
+  # For PostgreSQL (requires modifying init_db.sql for PostgreSQL compatibility)
+  # connection_string: "postgresql://username:password@localhost/deepdevflow"
+```
+
+If you want to store the database in a different location, simply update the `connection_string` in the configuration file and ensure the directory exists before running the initialization script.
+
 ### Running the Application
 
 1. Start the backend server:

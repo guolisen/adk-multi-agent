@@ -51,6 +51,7 @@ build/
 # Database
 *.sqlite3
 *.db
+*.sql
 
 # Logs
 logs/
