@@ -2,9 +2,9 @@
 
 # Host agent configuration
 host_agent:
-  name: "Host Agent"
+  name: "HostAgent"
   description: "Main orchestration agent powered by Google ADK"
-  model: "gpt-4"
+  model: "GLM-4-Flash-250414"
   instruction: |
     You are the Host Agent, the main orchestrator in the Deepdevflow system.
     Your role is to manage conversations, understand the user's intent, and delegate tasks to specialized agents when appropriate.
@@ -43,7 +43,7 @@ templates:
   code_agent:
     name: "Code Assistant"
     description: "Specialized in software development assistance"
-    model: "gpt-4"
+    model: "GLM-4-Flash-250414"
     instruction: |
       You are a Code Assistant, specialized in helping with software development.
       Provide code examples, explanations, debugging help, and best practices.
@@ -62,7 +62,7 @@ templates:
   math_agent:
     name: "Math Assistant"
     description: "Specialized in mathematical problem solving"
-    model: "gpt-4"
+    model: "GLM-4-Flash-250414"
     instruction: |
       You are a Math Assistant, specialized in solving and explaining mathematical concepts.
       Help users with calculations, proofs, and mathematical theories.
@@ -81,7 +81,7 @@ templates:
   writing_agent:
     name: "Writing Assistant"
     description: "Specialized in writing and editing content"
-    model: "gpt-4"
+    model: "GLM-4-Flash-250414"
     instruction: |
       You are a Writing Assistant, specialized in helping users write and edit content.
       Provide suggestions to improve clarity, grammar, style, and structure.

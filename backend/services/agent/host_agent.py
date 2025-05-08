@@ -66,7 +66,7 @@ class HostAgent(Agent):
         # Create agent
         return ADKAgent(
             model=LiteLlm(model=model_name),
-            name=self.agent_config.get("name", "Host Agent"),
+            name=self.agent_config.get("name", "HostAgent"),
             instruction=self._get_root_instruction,
             before_model_callback=self._before_model_callback,
             description=self.agent_config.get("description", "Main orchestration agent"),
@@ -426,7 +426,7 @@ Current agent: {current_agent_str}
             The agent model representation.
         """
         return AgentModel(
-            name=self.agent_config.get("name", "Host Agent"),
+            name=self.agent_config.get("name", "HostAgent"),
             description=self.agent_config.get("description", "Main orchestration agent"),
             is_remote=False,
             model=self.agent_config.get("model", "gpt-3.5-turbo"),
