@@ -1,0 +1,13 @@
+[project]
+name = "multiagent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "adk>=0.0.5",
+    "google>=3.0.0",
+    "google-adk>=0.5.0",
+    "google-generativeai>=0.8.5",
+    "jupyter>=1.1.1",
+]
