@@ -10,4 +10,7 @@ dependencies = [
     "google-adk>=0.5.0",
     "google-generativeai>=0.8.5",
     "jupyter>=1.1.1",
+    "litellm>=1.69.1",
+    "matplotlib>=3.10.3",
+    "networkx>=3.4.2",
 ]

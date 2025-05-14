@@ -6,26 +6,39 @@ from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.genai import types
 import google.generativeai as genai
+from google.adk.models.lite_llm import LiteLlm
+import os
+import logging
 
-genai.configure(api_key="AIzaSyC5hya50p1DLxD3CxJoFiSph2E5UYP23CI")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+logger = logging.getLogger("<<!!!!!!!>>")
+
+genai.configure(api_key="")
+os.environ['OPENAI_API_KEY'] = ''
+os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "False"
+MODEL_GPT_4O = "gpt-3.5-turbo-0125"
+
 
 # Define specialized sub-agents
 billing_agent = LlmAgent(
     name="Billing",
-    model="gemini-2.0-flash",
+    model=LiteLlm(model=MODEL_GPT_4O),
     instruction="You handle billing and payment-related inquiries.",
     description="Handles billing inquiries."
 )
 support_agent = LlmAgent(
     name="Support",
-    model="gemini-2.0-flash",
+    model=LiteLlm(model=MODEL_GPT_4O),
     instruction="You provide technical support and troubleshooting assistance.",
     description="Handles technical support requests."
 )
 # Define the coordinator agent
 coordinator = LlmAgent(
     name="HelpDeskCoordinator",
-    model="gemini-2.0-flash",
+    model=LiteLlm(model=MODEL_GPT_4O),
     instruction="Route user requests: Use Billing agent for payment issues, Support agent for technical problems.",
     description="Main help desk router.",
     sub_agents=[billing_agent, support_agent]
@@ -40,12 +53,10 @@ runner = Runner(
         session_service=InMemorySessionService(),
         memory_service=InMemoryMemoryService(),)
 
-model = genai.GenerativeModel("gemini-pro")
-response = model.generate_content("Tell me a joke.")
-print(response.text)
 
 # Simulate a user query
-user_query = "I can't log in."
+user_query = "I can't log in gmail, help to give advice."
+#user_query = "my billing is not working, help to give advice."
 user_id = "test_user"
 session_id = "test_session"
 
@@ -73,7 +84,9 @@ events = list(runner.run(
 # Process the events to get the response
 response = ""
 if events and events[-1].content and events[-1].content.parts:
-    response = "\n".join([p.text for p in events[-1].content.parts if p.text])
+    for event in events:
+        logger.info(f"Event: {event.author}, Actions: {event.actions}")
+        response = "\n".join([p.text for p in events[-1].content.parts if p.text])
 
 print(response)
 

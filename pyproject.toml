@@ -79,6 +79,9 @@ python_files = "test_*.py"
 asyncio_mode = "auto"
 
 [tool.uv]
+
+[tool.uv.workspace]
+members = ["osample"]
 # uv specific configuration
 #pip-requirement-upgrade-strategy = "eager"
 #pip-break-system-packages = false
