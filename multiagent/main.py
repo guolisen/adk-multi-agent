@@ -14,7 +14,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
-logger = logging.getLogger("<<!!!!!!!>>")
+logger = logging.getLogger("<<MultiAgentTest>>")
 
 genai.configure(api_key="")
 os.environ['OPENAI_API_KEY'] = ''
